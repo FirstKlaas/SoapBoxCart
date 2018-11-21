@@ -6,33 +6,25 @@
  * Started: 21.11.2018
  **********************************************************/
 #include "FastLED.h"
+#include "steering.h"
 
 /***
- * Neo Pixel Ring
+ * Neo Pixel Ring for the steering wheel
  */
-const int  LED_DATA_PIN     = 6;
-const int  NUM_LEDS         = 12;
-CRGB leds[NUM_LEDS];
-
-uint8_t hue_start = 0;
+SteeringWheel wheel = SteeringWheel();
+uint8_t idx = 0;
 
 void setup() {
 
   /**
    * Initialize FastLED for the NeoPixel ring
    */
-  FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
-  fill_solid(leds,NUM_LEDS,CRGB::Black);
   FastLED.show();
-
-  
 }
 
 void loop() {
-  for (uint8_t i = 0; i<NUM_LEDS; i++) {
-    leds[i] = CHSV(hue_start + (i*20),255,155);
-  }
-  hue_start += 5;
+  wheel.fadeOut(224,idx++);  
   FastLED.show();
-  delay(10);  
+  delay(60);  
+  idx %= 12;
 }
